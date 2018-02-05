@@ -9,6 +9,7 @@ const srcDir = path.resolve(__dirname, "app");
 const baseUrl = "/";
 
 const extractVendorCss = new ExtractTextPlugin({ filename: "vendor.[contenthash].css", allChunks: true });
+const extractAppCss = new ExtractTextPlugin({ filename: "app.[contenthash].css", allChunks: true });
 
 module.exports = {
     entry: `${srcDir}/index.ts`,
@@ -24,7 +25,8 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js',
+            'vars': `${srcDir}/variables.scss`
         }
     },
 
@@ -47,6 +49,28 @@ module.exports = {
                 issuer: /\.ts$/i
             },
             {
+                test: /index\.scss$/,
+                use: extractAppCss.extract({
+                    fallback: "style-loader",
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                minimize: false,
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ]
+                }),
+                issuer: /\.ts$/i
+            },
+            {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
@@ -62,7 +86,7 @@ module.exports = {
             },
             {
                 test: /\.tsx?$/,
-                loader: 'awesome-typescript-loader',
+                loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
                     appendTsSuffixTo: [/\.vue$/],
@@ -98,27 +122,7 @@ module.exports = {
             filename: `${outDir}/index.html`
         }),
         extractVendorCss,
+        extractAppCss,
         new CleanWebpackPlugin([outDir])
     ]
-}
-
-if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
-    // http://vue-loader.vuejs.org/en/workflow/production.html
-    module.exports.plugins = (module.exports.plugins || []).concat([
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        })
-    ])
 }
