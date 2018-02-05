@@ -19,11 +19,11 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class NavBar extends Vue {
 
     private goToPeople() {
-        alert("Go to People");
+        this.$router.push("/people");
     }
 
     private goToColors() {
-        alert("Go to Colors");
+        this.$router.push("/colors");
     }
 }
 </script>
