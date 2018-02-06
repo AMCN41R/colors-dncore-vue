@@ -17,10 +17,7 @@
             <tbody>
                 <tr :key="person.id" v-for="person in people" @click="goToPerson(person.id)">
                     <td>
-                        <!-- <a route-href="route:edit-person;params.bind:{id:person.id}">
-                            {{person.fullName}}
-                        </a> -->
-                        {{person.fullName}}
+                        <router-link @click.native.stop :to="{ name: 'person', params: { id: person.id }}">{{person.fullName}}</router-link>
                     </td>
                     <td class="align-center">{{person.isAuthorised | toYesNo}}</td>
                     <td class="align-center">{{person.isEnabled | toYesNo}}</td>
@@ -55,7 +52,7 @@ export default class PeopleList extends Vue {
   }
 
   private goToPerson(id: number) {
-    alert(`Go to person: ${id}`);
+    this.$router.push(`people/${id}`);
   }
 }
 </script>

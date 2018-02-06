@@ -7,6 +7,7 @@ import "./index.scss";
 
 import NavBar from "./components/nav-bar.vue";
 import PeopleList from "./pages/people/list.vue";
+import EditPerson from "./pages/people/edit/edit.vue";
 import ColorAdmin from "./pages/colors/color-admin.vue";
 
 
@@ -18,9 +19,10 @@ Vue.filter("toYesNo", (value: boolean) => {
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/', redirect: '/people' },
-    { path: '/people', component: PeopleList },
-    { path: '/colors', component: ColorAdmin }
+    { path: "/", redirect: "/people" },
+    { path: "/people", name: "people", component: PeopleList },
+    { path: "/people/:id", name: "person", component: EditPerson },
+    { path: "/colors", name: "colors", component: ColorAdmin }
 ];
 
 const router = new VueRouter({
