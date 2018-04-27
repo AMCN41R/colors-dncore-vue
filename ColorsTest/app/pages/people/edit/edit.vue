@@ -4,7 +4,7 @@
 
 		<div v-if="!person"><i class="fa fa-cog fa-spin fa-fw fa-2x"></i></div>
 
-		<div v-if="person" class="panel">
+		<div v-else class="panel">
 
 			<div class="edit-person-header">
 				Update {{person.fullName}}

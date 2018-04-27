@@ -1,24 +1,30 @@
 <template>
 
-  <div class="panel">
+  <div>
 
-      <div class="colors-header flex-container">
-          <div class="colors-header-title">
-              Available Colors
-          </div>
-          <div class=" colors-header-add pull right" @click="addColor()">
-              <i class="fa fa-plus"></i>
-          </div>
-      </div>
+    <confirm-modal v-if="showModal" @close="showModal = false" />
 
-      <div :key="color.id" v-for="color in colors" class="color-item">
-          <span class="color-item-name">{{color.name}}</span>
-          <div class="pull-right flex-container">
-              <div class="action-icon" @click="deleteColor(color)">
-                  <i class="fa fa-trash fa-fw"></i>
-              </div>
-          </div>
-      </div>
+    <div class="panel">
+
+        <div class="colors-header flex-container">
+            <div class="colors-header-title">
+                Available Colors
+            </div>
+            <div class=" colors-header-add pull right" @click="addColor()">
+                <i class="fa fa-plus"></i>
+            </div>
+        </div>
+
+        <div :key="color.id" v-for="color in colors" class="color-item">
+            <span class="color-item-name">{{color.name}}</span>
+            <div class="pull-right flex-container">
+                <div class="action-icon" @click="deleteColor(color)">
+                    <i class="fa fa-trash fa-fw"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </div>
 
 </template>
@@ -27,9 +33,12 @@
 import { Vue, Component } from "vue-property-decorator";
 import { ColorsApi, IColor } from "../../api/colors-api";
 
+import ConfirmModal from "../../components/confirm-modal.vue";
+
 @Component
 export default class ColorAdmin extends Vue {
   private colors: IColor[] = [];
+  private showModal: boolean = false;
 
   mounted() {
     this.fetchData();
@@ -40,7 +49,8 @@ export default class ColorAdmin extends Vue {
   }
 
   private addColor() {
-    alert("ADD");
+    // alert("ADD");
+    this.showModal = true;
   }
 
   private deleteColor(color: IColor) {

@@ -16,6 +16,9 @@ Vue.filter("toYesNo", (value: boolean) => {
     return value ? "Yes" : "No";
 })
 
+import ConfirmModal from "./components/confirm-modal.vue";
+Vue.component("confirm-modal", ConfirmModal);
+
 Vue.use(VueRouter)
 
 const routes = [
